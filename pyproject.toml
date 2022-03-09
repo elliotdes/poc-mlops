@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "poc-mlops"
+version = "0.1.0"
+description = "proof of concept for MLOps."
+authors = ["elliotdes"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+mlflow = "^1.24.0"
+scikit-learn = "^1.0.2"
+typer = "^0.4.0"
+fastapi = "^0.75.0"
+uvicorn = "^0.17.5"
+streamlit = "^1.7.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+pytest = "^7.0.1"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
