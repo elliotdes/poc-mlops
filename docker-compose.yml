@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: "postgres"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+
+  api:
+    build: .
+    command: poetry run uvicorn api.main:app --host 0.0.0.0
+    environment:
+      MODEL_ID: ${MODEL_ID}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./mlruns:/code/mlruns
+
+  dashboard:
+    build: .
+    command: poetry run streamlit run dashboard/main.py
+    environment:
+      MODEL_ID: ${MODEL_ID}
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./mlruns:/code/mlruns
+
+  mlflow:
+    build: .
+    command: poetry run mlflow server --port 5001 --host 0.0.0.0
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./mlruns:/code/mlruns

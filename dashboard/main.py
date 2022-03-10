@@ -1,4 +1,4 @@
-from operator import mod
+import os
 
 import pandas as pd
 import streamlit as st
@@ -14,13 +14,19 @@ def get_data(nrows: int):
 
 
 @st.cache
-def get_stats():
-    return get_metrics_params("eed0f563443743bf8649bfa71dc89c22")
+def get_stats(model_id: str):
+    if model_id:
+        return get_metrics_params(model_id)
+    else:
+        return None
 
 
 @st.cache
-def get_model():
-    return load_model("runs:/eed0f563443743bf8649bfa71dc89c22/model")
+def get_model(model_id: str):
+    if model_id:
+        return load_model(model_id)
+    else:
+        return None
 
 
 def min_max_avg_col(df: pd.DataFrame, feature: str):
@@ -30,17 +36,29 @@ def min_max_avg_col(df: pd.DataFrame, feature: str):
     return float(min_val), float(max_val), float(avg_val)
 
 
+model_id = os.environ.get("MODEL_ID")
+
 st.title("Performance Dashboard")
+st.write(f"Run ID: {model_id}")
 
 data = get_data(20)
 stats = get_stats()
 model = get_model()
 
-st.subheader("Sample data")
+st.subheader("Sample Data")
 st.write(data)
 
 st.subheader("Performance")
-st.write(stats)
+col_metrics, col_params = st.columns(2)
+with col_metrics:
+    st.subheader("Metrics")
+    for i, e in stats["metrics"].items():
+        st.metric(i, e)
+with col_params:
+    st.subheader("Parameters")
+    for i, e in stats["parameters"].items():
+        st.metric(i, e)
+
 
 st.subheader("Prediction")
 col1, col2 = st.columns(2)

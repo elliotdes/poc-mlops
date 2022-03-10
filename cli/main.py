@@ -79,6 +79,12 @@ def predict(model_uri: str, features: List[float]):
 
 
 @app.command()
+def register_model():
+    """Once a model has been logged, it can be registered."""
+    pass
+
+
+@app.command()
 def stats(run_id: str):
     print(get_metrics_params(run_id))
 

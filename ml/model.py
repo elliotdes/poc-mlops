@@ -15,7 +15,8 @@ class Model:
         return predicted
 
 
-def load_model(model_uri: str):
+def load_model(run_id: str):
+    model_uri = f"runs:/{run_id}/model"
     loaded_model = mlflow.sklearn.load_model(model_uri)
     return loaded_model
 
