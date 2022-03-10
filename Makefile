@@ -10,3 +10,5 @@ api:
 
 dash:
 	poetry run streamlit run dashboard/main.py
+
+.PHONY: cli api dash
