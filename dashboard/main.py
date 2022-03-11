@@ -42,8 +42,8 @@ st.title("Performance Dashboard")
 st.write(f"Run ID: {model_id}")
 
 data = get_data(20)
-stats = get_stats()
-model = get_model()
+stats = get_stats(model_id)
+model = get_model(model_id)
 
 st.subheader("Sample Data")
 st.write(data)
