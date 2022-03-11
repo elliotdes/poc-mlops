@@ -56,11 +56,8 @@ def train_model(
 
 
 @app.command()
-def predict(model_uri: str, features: List[float]):
+def predict_model(model_uri: str, features: List[float]):
     """Use given model to predict the features.
-
-    python cli/main.py predict "runs:/eed0f563443743bf8649bfa71dc89c22/model"
-    7.4 0.7 0 1.9 0.076 11 34 0.9978 3.51 0.56 9.4
 
     Args:
         model_uri (str): Model to load.
