@@ -33,7 +33,6 @@ async def root():
 @app.post("/predict")
 async def predict_model(features: List[float]):
 
-    logging.info(type(features))
     prediction = model.predict(
         pd.DataFrame(
             [features],
