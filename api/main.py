@@ -1,4 +1,4 @@
-import logging
+import datetime
 from typing import List
 import os
 
@@ -6,6 +6,7 @@ import pandas as pd
 from fastapi import FastAPI
 import mlflow
 import numpy as np
+import pymongo
 
 from ml.data import get_data
 from ml.evaluate import eval_metrics
@@ -14,6 +15,13 @@ from ml.predict import predict
 from ml.training import train
 
 app = FastAPI()
+
+
+def response_to_mongo(r: dict):
+    client = pymongo.MongoClient("mongodb://mongo:27017")
+    db = client["models"]
+    model_collection = db["example-model"]
+    model_collection.insert_one(r)
 
 
 @app.on_event("startup")
@@ -41,6 +49,9 @@ async def predict_model(features: List[float]):
     )
 
     response = {"predictions": prediction.tolist()}
+    response_to_mongo(
+        {"predictions": prediction.tolist(), "date": datetime.datetime.utcnow()},
+    )
     return response
 
 
