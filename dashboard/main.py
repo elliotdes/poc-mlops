@@ -1,6 +1,7 @@
 import os
 
 import pandas as pd
+import pymongo
 import streamlit as st
 
 from ml.model import get_metrics_params, load_model
@@ -11,6 +12,13 @@ def get_data(nrows: int):
     csv_url = "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
     data = pd.read_csv(csv_url, sep=";", nrows=nrows)
     return data
+
+
+def get_usage():
+    client = pymongo.MongoClient("mongodb://mongo:27017")
+    db = client["models"]
+    model_collection = db["example-model"]
+    return list(model_collection.find({}))
 
 
 @st.cache
@@ -42,8 +50,12 @@ st.title("Performance Dashboard")
 st.write(f"Run ID: {model_id}")
 
 data = get_data(20)
+usage = get_usage()
 stats = get_stats(model_id)
 model = get_model(model_id)
+
+st.subheader("Usage")
+st.write(usage)
 
 st.subheader("Sample Data")
 st.write(data)
