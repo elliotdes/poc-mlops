@@ -22,6 +22,8 @@ def response_to_mongo(r: dict):
     db = client["models"]
     model_collection = db["example-model"]
     model_collection.insert_one(r)
+    # Remove ObjectId '_id' field added by insert_one()
+    r.pop("_id", None)
 
 
 @app.on_event("startup")
@@ -48,10 +50,11 @@ async def predict_model(features: List[float]):
         )
     )
 
-    response = {"predictions": prediction.tolist()}
-    response_to_mongo(
-        {"predictions": prediction.tolist(), "date": datetime.datetime.utcnow()},
-    )
+    response = {
+        "predictions": prediction.tolist(),
+        "date": datetime.datetime.utcnow(),
+    }
+    response_to_mongo(response)
     return response
 
 
