@@ -14,11 +14,14 @@ def get_data(nrows: int):
     return data
 
 
-def get_usage():
-    client = pymongo.MongoClient("mongodb://mongo:27017")
-    db = client["models"]
-    model_collection = db["example-model"]
-    return list(model_collection.find({}))
+def get_usage(model_id: str):
+    if model_id:
+        client = pymongo.MongoClient("mongodb://mongo:27017")
+        db = client["models"]
+        model_collection = db["example-model"]
+        return list(model_collection.find({"model_id": model_id}, {"_id": 0}))
+    else:
+        return None
 
 
 @st.cache
@@ -50,7 +53,7 @@ st.title("Performance Dashboard")
 st.write(f"Run ID: {model_id}")
 
 data = get_data(20)
-usage = get_usage()
+usage = get_usage(model_id)
 stats = get_stats(model_id)
 model = get_model(model_id)
 
