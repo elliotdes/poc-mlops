@@ -42,6 +42,7 @@ async def root():
 
 @app.post("/predict")
 async def predict_model(features: List[float]):
+    model_id = os.environ.get("MODEL_ID")
 
     prediction = model.predict(
         pd.DataFrame(
@@ -51,6 +52,8 @@ async def predict_model(features: List[float]):
     )
 
     response = {
+        "model_id": model_id,
+        "features": features,
         "predictions": prediction.tolist(),
         "date": datetime.datetime.utcnow(),
     }
