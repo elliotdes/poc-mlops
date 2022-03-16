@@ -6,7 +6,6 @@ Influenced by [Made With ML](https://madewithml.com/).
 
 ## To-Do
 
-- [ ] docker compose (mlflow database-backed store) MLFLOW_TRACKING_URI
-- [ ] Add model registry
-- [ ] Improve dashboard (model comparison, api activity)
-- [ ] Monitoring for drift
+- Add model registry
+- Add drift monitoring to dashboard
+- Add S3 equivalent for storage between model training phases, model storage etc
